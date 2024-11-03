@@ -1,5 +1,6 @@
+
 import java.util.Scanner;
-// Lab 1 Instructions
+
 /* Create a program that allows users to post messages to a discussion
 board. The discussion board can be represented as an array of 10
 Strings. If a user tries to make a new post when the discussion board is
@@ -26,7 +27,6 @@ public class DiscussionBoard {
 
         // discussion board represented as an array of 10 strings
         String[] posts = new String[10];
-        String [] messages = new String[10]; // array for messages from post 
         // need to keep track of the posts, so it doesnt exceed 10
         int postCount = 0;
         int userChoice;
@@ -49,7 +49,6 @@ public class DiscussionBoard {
 
             // need to consume new line
             scanner.nextLine();
-
             // based off whatver the user chooses (1-9), it will enter my switch case below
             switch (userChoice) {
                 case 1:
@@ -61,16 +60,14 @@ public class DiscussionBoard {
                         String getName = scanner.nextLine(); // eg: Hamza
 
                         System.out.println("Enter your message: ");
-                        String userMessage = scanner.nextLine();
-                        posts[postCount] = getName + " says:" + userMessage;
-                        messages[postCount] = userMessage; // storing the message seperately
+                        String message = scanner.nextLine();
+                        posts[postCount] = getName + " says:" + message;
                         postCount++;
                     } else {
                         System.out.println("Sorry, the discussion board is full");
                     }
                     break;
                 case 2:
-                    // looping through the posts, if it isnt empty, we print a post
                     for (String post : posts) {
                         if (post != null) {
                             System.out.println(post);
@@ -79,10 +76,9 @@ public class DiscussionBoard {
                     break;
 
                 case 3:
-                    // looping through the posts, but in the reverse order
-                    for (int j = posts.length - 1; j >= 0; j--){
-                        if (posts[j] != null){
-                            System.out.println(posts[j]);
+                    for (int i = posts.length - 1; i >= 0; i--) {
+                        if (posts[i] != null) {
+                            System.out.println(posts[i]);
                         }
                     }
                     break;
@@ -96,38 +92,34 @@ public class DiscussionBoard {
                     System.out.println("Please enter the name you'd like to search for: ");
                     // name input from user below, using scanner from earlier
                     String nameSearch = scanner.nextLine();
-                    boolean found = false;
                     for (String post : posts) {
                         // if the post isnt empty and the string starts with the name, then we found our user
                         if (post != null && post.startsWith(nameSearch + " says:")) {
                             System.out.println(post);
-                            found = true;
                         }
-                    }
-                    if (!found){
-                        // if we cant find any posts with the name the user entered in nameSearch, we print this message
-                        System.out.println("Sorry, the name you entered wasnt found, no has has a post with the name: ' " + nameSearch + " ' ");
                     }
                     break;
 
                 case 6:
                     int countVowel = 0;
-                    for (String message: messages){
-                        if (message != null){
-                            String messageLowerCase = message.toLowerCase();
-                            for (char ch: messageLowerCase.toCharArray()){
-                                if ("aeiou".indexOf(ch) != -1){
-                                    countVowel++;
+                    for (String post : posts) {
+                        if (post != null) {
+                            // the vowels were looking for are all lowercase, so we need to convert our messages to .toLowerCase()
+                            String postLowerCase = post.toLowerCase();
+                            for (char vowel : "aeiou".toCharArray()) {
+                                if (postLowerCase.contains(String.valueOf(vowel))) {
+                                    int originalLength = postLowerCase.length();
+                                    int newLength = postLowerCase.replace(String.valueOf(vowel), "").length();
+                                    countVowel += originalLength - newLength;
                                 }
                             }
                         }
-                    }  
+                    }
                     System.out.println("Total number of vowels across all posts: " + countVowel);
                     break;
-                    
+
                 case 7:
                     System.out.println("Enter the word that you are searching for (case sensitive: )");
-                    // user string input for the word they search for
                     String wordSearch = scanner.nextLine();
                     for (String post : posts) {
                         // contains method checks if the string contains the needle as a substring
@@ -139,9 +131,7 @@ public class DiscussionBoard {
 
                 case 8:
                     System.out.println("Enter the word that you are searching for (case insensitive):");
-                    // user input for the insensitive search is converted to all lower case, because 
-                    // it allows for a case-insensitive comparison with each post in the list
-                    String wordSearchInsensitive = scanner.nextLine().toLowerCase();
+                    String wordSearchInsensitive = scanner.nextLine();
                     for (String post : posts) {
                         if (post != null && post.toLowerCase().contains(wordSearchInsensitive)) {
                             System.out.println(post);
